@@ -85,14 +85,14 @@ function ClaimListDiscover(props: Props) {
     pageSize,
     hideBlock,
     defaultClaimType,
-    streamType,
+    streamType = CS.FILE_VIDEO,
     defaultStreamType,
     freshness,
     defaultFreshness = CS.FRESH_WEEK,
     renderProperties,
     includeSupportAction,
     repostedClaimId,
-    hideFilter,
+    hideFilter = true,
     infiniteScroll = true,
     followedTags,
     injectedItem,
@@ -524,7 +524,7 @@ function ClaimListDiscover(props: Props) {
             )}
           </div>
         </div>
-        {expanded && (
+        {expanded && false && (
           <>
             <div className={classnames('card--inline', `claim-search__menus`)}>
               {/* FRESHNESS FIELD */}

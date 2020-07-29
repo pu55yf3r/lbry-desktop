@@ -272,7 +272,14 @@ function PublishFile(props: Props) {
       subtitle={isStillEditing && __('You are currently editing your upload.')}
       actions={
         <React.Fragment>
-          <FileSelector disabled={disabled} currentPath={currentFile} onFileChosen={handleFileChange} />
+          <FileSelector
+            disabled={disabled}
+            currentPath={currentFile}
+            onFileChosen={handleFileChange}
+            // https://stackoverflow.com/questions/19107685/safari-input-type-file-accept-video-ignores-mp4-files
+            accept="video/mp4,video/x-m4v,video/*"
+            placeholder={__('Select video file to upload')}
+          />
           {getMessage()}
           {/* @if TARGET='app' */}
           <FormField

@@ -27,7 +27,7 @@ function PublishText(props: Props) {
           <FormField
             type="text"
             name="content_title"
-            label={__('Title')}
+            label={__('Video Title')}
             placeholder={__('Descriptive titles work best')}
             disabled={disabled}
             value={title}
@@ -37,7 +37,7 @@ function PublishText(props: Props) {
           <FormField
             type={!SIMPLE_SITE && advancedEditor ? 'markdown' : 'textarea'}
             name="content_description"
-            label={__('Description')}
+            label={__('Video Description')}
             placeholder={__(
               'What is your content about? Use this space to include any other relevant details you may like to share about your content and channel.'
             )}

@@ -8,9 +8,9 @@ import FileRenderInitiator from 'component/fileRenderInitiator';
 import FileRenderInline from 'component/fileRenderInline';
 import FileRenderDownload from 'component/fileRenderDownload';
 import Card from 'component/common/card';
-import FileDetails from 'component/fileDetails';
-import FileValues from 'component/fileValues';
-import FileDescription from 'component/fileDescription';
+// import FileDetails from 'component/fileDetails';
+// import FileValues from 'component/fileValues';
+// import FileDescription from 'component/fileDescription';
 import WaitUntilOnPage from 'component/common/wait-until-on-page';
 import RecommendedContent from 'component/recommendedContent';
 import CommentsList from 'component/commentsList';
@@ -158,10 +158,8 @@ class FilePage extends React.Component<Props> {
         </div>
         <div className="section columns">
           <div className="card-stack">
-            <FileDescription uri={uri} />
-            <FileValues uri={uri} />
-            <FileDetails uri={uri} />
             <Card
+              defaultExpand
               title={__('Leave a Comment')}
               actions={
                 <div>
@@ -172,6 +170,11 @@ class FilePage extends React.Component<Props> {
                 </div>
               }
             />
+            {/* <FileDescription uri={uri} /> */}
+
+            {/* <FileValues uri={uri} /> */}
+
+            {/* <FileDetails uri={uri} /> */}
           </div>
           <RecommendedContent uri={uri} />
         </div>

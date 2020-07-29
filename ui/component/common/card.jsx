@@ -60,7 +60,8 @@ export default function Card(props: Props) {
             {expandable && (
               <div className="card__title-actions">
                 <Button
-                  button={'alt'}
+                  button="alt"
+                  className="card__expand-btn"
                   aria-expanded={expanded}
                   aria-label={__('More')}
                   icon={expanded ? ICONS.SUBTRACT : ICONS.ADD}

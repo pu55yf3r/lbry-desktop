@@ -10,9 +10,7 @@ import Spinner from 'component/spinner';
 import usePersistedState from 'effects/use-persisted-state';
 import classnames from 'classnames';
 import { PINNED_LABEL_1, PINNED_URI_1, PINNED_URI_2, PINNED_LABEL_2 } from 'config';
-// @if TARGET='web'
-// import Ads from 'web/component/ads';
-// @endif
+import { EXTRA_SIDEBAR_LINKS } from 'homepage';
 
 const SHOW_CHANNELS = 'SHOW_CHANNELS';
 const SHOW_TAGS = 'SHOW_TAGS';
@@ -118,9 +116,6 @@ function SideNavigation(props: Props) {
                 : {}),
             },
             {
-              ...buildLink('/', __('Home'), ICONS.HOME, null, null, true),
-            },
-            {
               ...buildLink(
                 PAGES.CHANNELS_FOLLOWING,
                 __('Following'),
@@ -129,15 +124,14 @@ function SideNavigation(props: Props) {
                 requireAuthOnPersonalizedActions
               ),
             },
-            {
-              ...buildLink(PAGES.TAGS_FOLLOWING, __('Your Tags'), ICONS.TAG, null, requireAuthOnPersonalizedActions),
-            },
-            {
-              ...buildLink(PAGES.DISCOVER, __('All Content'), ICONS.DISCOVER),
-            },
-            {
-              ...buildLink(PAGES.LIBRARY, IS_WEB ? __('Purchased') : __('Library'), ICONS.LIBRARY),
-            },
+            ...EXTRA_SIDEBAR_LINKS,
+            // {
+            //   ...buildLink(PAGES.LIBRARY, IS_WEB ? __('Purchased') : __('Library'), ICONS.LIBRARY),
+            // },
+            // {
+            //   ...buildLink(PAGES.DISCOVER, __('All Content'), ICONS.DISCOVER),
+            // },
+
             // @if TARGET='web'
             {
               ...(PINNED_URI_1
@@ -159,6 +153,7 @@ function SideNavigation(props: Props) {
                 <li key={linkProps.navigate}>
                   <Button
                     {...linkProps}
+                    navigate={linkProps.route || linkProps.navigate}
                     icon={pulseLibrary && linkProps.icon === ICONS.LIBRARY ? ICONS.PURCHASED : linkProps.icon}
                     className={classnames('navigation-link', {
                       'navigation-link--pulse': linkProps.icon === ICONS.LIBRARY && pulseLibrary,
@@ -195,12 +190,12 @@ function SideNavigation(props: Props) {
               {
                 ...buildLink(PAGES.WALLET, __('Wallet'), ICONS.WALLET),
               },
-              {
-                ...buildLink(PAGES.REWARDS, __('Rewards'), ICONS.REWARDS),
-              },
-              {
-                ...buildLink(PAGES.INVITE, __('Invites'), ICONS.INVITE),
-              },
+              //   {
+              //     ...buildLink(PAGES.REWARDS, __('Rewards'), ICONS.REWARDS),
+              //   },
+              //   {
+              //     ...buildLink(PAGES.INVITE, __('Invites'), ICONS.INVITE),
+              //   },
               {
                 ...buildLink(PAGES.UPLOAD, __('Upload'), ICONS.PUBLISH),
               },
@@ -246,9 +241,6 @@ function SideNavigation(props: Props) {
           </ul>
         )}
       </nav>
-      // @if TARGET='web'
-      {/* {!isAuthenticated && !expanded && <Ads />} commenting out sidebar ads for test */}
-      // @endif
     </Wrapper>
   );
 }

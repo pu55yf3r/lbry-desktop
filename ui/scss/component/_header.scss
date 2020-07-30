@@ -158,6 +158,12 @@
   }
 }
 
+.header__odysee {
+  &:hover {
+    filter: drop-shadow(1px 2px 10px var(--color-gray-3));
+  }
+}
+
 .header__navigation-item--button-mobile {
   @media (max-width: $breakpoint-small) {
     .button__label {

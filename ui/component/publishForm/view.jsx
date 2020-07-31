@@ -37,7 +37,7 @@ const MODES = Object.values(PUBLISH_MODES);
 type Props = {
   disabled: boolean,
   tags: Array<Tag>,
-  publish: (?string) => void,
+  publish: (?string, ?boolean) => void,
   filePath: ?string,
   fileText: ?string,
   bid: ?number,
@@ -272,7 +272,11 @@ function PublishForm(props: Props) {
     }
     // Publish file
     if (mode === PUBLISH_MODES.FILE) {
-      publish(filePath);
+	  if (isStillEditing) {
+	    publish(filePath, false);
+	  } else {
+	    publish(filePath, true);
+	  }
     }
   }
 

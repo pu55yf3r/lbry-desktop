@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Block mature content when accessed directly from URL _community pr!_ ([#4560](https://github.com/lbryio/lbry-desktop/pull/4560))
+- Add Publish Preview dialog _community pr!_ ([#4620](https://github.com/lbryio/lbry-desktop/pull/4620))
 
 ### Changed
 

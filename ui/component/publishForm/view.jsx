@@ -79,6 +79,7 @@ type Props = {
   checkAvailability: string => void,
   onChannelChange: string => void,
   ytSignupPending: boolean,
+  modal: { id: string, modalProps: {} },
 };
 
 function PublishForm(props: Props) {
@@ -116,6 +117,7 @@ function PublishForm(props: Props) {
     checkAvailability,
     onChannelChange,
     ytSignupPending,
+    modal,
   } = props;
 
   // Used to check if name should be auto-populated from title
@@ -150,9 +152,20 @@ function PublishForm(props: Props) {
     ? isStillEditing && formValidLessFile
     : formValidLessFile;
 
+  const [previewing, setPreviewing] = React.useState(false);
+  useEffect(() => {
+    if (!modal) {
+      setTimeout(() => {
+        setPreviewing(false);
+      }, 250);
+    }
+  }, [modal]);
+
   let submitLabel;
   if (isStillEditing) {
     submitLabel = !publishing ? __('Save') : __('Saving...');
+  } else if (previewing) {
+    submitLabel = __('Preparing...');
   } else {
     submitLabel = !publishing ? __('Upload') : __('Uploading...');
   }
@@ -275,6 +288,7 @@ function PublishForm(props: Props) {
 	  if (isStillEditing) {
 	    publish(filePath, false);
 	  } else {
+        setPreviewing(true);	  
 	    publish(filePath, true);
 	  }
     }
@@ -378,7 +392,11 @@ function PublishForm(props: Props) {
             onClick={handlePublish}
             label={submitLabel}
             disabled={
-              formDisabled || !formValid || uploadThumbnailStatus === THUMBNAIL_STATUSES.IN_PROGRESS || ytSignupPending
+              formDisabled ||
+              !formValid ||
+              uploadThumbnailStatus === THUMBNAIL_STATUSES.IN_PROGRESS ||
+              ytSignupPending ||
+              previewing
             }
           />
           <Button button="link" onClick={clearPublish} label={__('Cancel')} />

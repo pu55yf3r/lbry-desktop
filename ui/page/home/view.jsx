@@ -53,7 +53,7 @@ function HomePage(props: Props) {
           </p>
         </div>
       )}
-      {rowData.map(({ label, navigate, help, options = {}, hideRepostLabel = false }, index) => (
+      {rowData.map(({ label, route, navigate, help, options = {}, hideRepostLabel = false }, index) => (
         <div key={label} className="claim-grid__wrapper">
           <h1 className="section__actions">
             <span
@@ -71,7 +71,7 @@ function HomePage(props: Props) {
             <Button
               className="claim-grid__title--secondary"
               button="link"
-              navigate={navigate}
+              navigate={route || navigate}
               iconRight={ICONS.ARROW_RIGHT}
               label={__('View More')}
             />

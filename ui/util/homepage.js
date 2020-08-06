@@ -347,6 +347,8 @@ const ENLIGHTENMENT_CHANNEL_IDS = [
   '5640bb7d84d8953d367841909967ab345f2c11ca',
   'ddc7f2030c474ca4c9c0043bf19ec0bf79e2783f',
   'f14e64d962c226630702f9a61f48ab4f55ecffb9',
+  'cec54cfc1b67da757bcab8a8643328717bbd339d',
+  'ee1aaf96d05ddf21e96deb681d5ed2f5dea1d237',
 ];
 
 export const ENLIGHTENMENT = {

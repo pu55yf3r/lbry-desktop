@@ -361,7 +361,7 @@ export const ENLIGHTENMENT = {
   options: {
     orderBy: ['release_time'],
     pageSize: 12,
-    channelIds: RABBIT_HOLE_CHANNEL_IDS,
+    channelIds: ENLIGHTENMENT_CHANNEL_IDS,
   },
 };
 

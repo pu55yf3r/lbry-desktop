@@ -56,6 +56,8 @@ type Props = {
   clearPasswordEntry: () => void,
   hasNavigated: boolean,
   syncSettings: () => void,
+  sidebarOpen: boolean,
+  setSidebarOpen: boolean => void,
 };
 
 const Header = (props: Props) => {
@@ -78,6 +80,8 @@ const Header = (props: Props) => {
     emailToVerify,
     backout,
     syncSettings,
+    sidebarOpen,
+    setSidebarOpen,
   } = props;
   const isMobile = useIsMobile();
   // on the verify page don't let anyone escape other than by closing the tab to keep session data consistent
@@ -203,6 +207,11 @@ const Header = (props: Props) => {
         ) : (
           <>
             <div className="header__navigation">
+              <Button
+                className="header__navigation-item menu__title header__navigation-item--icon"
+                icon={ICONS.MENU}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+              />
               <Button
                 className="header__navigation-item header__navigation-item--lbry header__navigation-item--button-mobile"
                 // @if TARGET='app'

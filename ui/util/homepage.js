@@ -246,6 +246,10 @@ const RABBIT_HOLE_CHANNEL_IDS = [
   '11ef4045587c753d4892f7f1e41317ae06cb8746',
   '68eb3f3e884400f60080bb910055bc11fecd26d2',
   'e11e2fc3056137948d2cc83fb5ca2ce9b57025ec',
+  'cec54cfc1b67da757bcab8a8643328717bbd339d',
+  'ee1aaf96d05ddf21e96deb681d5ed2f5dea1d237',
+  '5cad54ea797c4ec339cc3437a12b144a97d63c08',
+  '8efc01ef6c24793d0f2f0a415b201d22a427a1d9',
 ];
 
 export const RABBIT_HOLE = {

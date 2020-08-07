@@ -111,6 +111,7 @@ const PRIMARY_CONTENT_CHANNEL_IDS = [
   '44c49bbab8a3e9999f3ba9dee0186288b1d960a7',
   '2305db36455aa0d18571015b9e9bd0950262aa0f',
   '82f1d8c257d3e76b711a5cecd1e49bd3fa6a9de9',
+  'faed2b028a9b5a712d5180eaa6fd2aa619f941bc',
 ];
 
 export const PRIMARY_CONTENT = {

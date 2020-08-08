@@ -5,6 +5,8 @@ import { selectUploadCount } from 'lbryinc';
 import { selectUserVerifiedEmail } from 'redux/selectors/user';
 import { makeSelectClientSetting } from 'redux/selectors/settings';
 import { doSignOut } from 'redux/actions/app';
+import { selectUnreadNotificationCount } from 'redux/selectors/notifications';
+
 import SideNavigation from './view';
 
 const select = state => ({
@@ -14,6 +16,7 @@ const select = state => ({
   uploadCount: selectUploadCount(state),
   email: selectUserVerifiedEmail(state),
   purchaseSuccess: selectPurchaseUriSuccess(state),
+  unreadCount: selectUnreadNotificationCount(state),
 });
 
 export default connect(select, {

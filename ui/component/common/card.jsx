@@ -49,7 +49,12 @@ export default function Card(props: Props) {
             'card__header--nowrap': noTitleWrap,
           })}
         >
-          <div className={classnames('card__title-section', { 'card__title-section--body-list': isBodyList })}>
+          <div
+            className={classnames('card__title-section', {
+              'card__title-section--body-list': isBodyList,
+              'card__title-section--small': smallTitle,
+            })}
+          >
             {icon && <Icon sectionIcon icon={icon} />}
             <div>
               {isPageTitle && <h1 className="card__title">{title}</h1>}

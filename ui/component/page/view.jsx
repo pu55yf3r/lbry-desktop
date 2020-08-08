@@ -10,7 +10,8 @@ import StatusBar from 'component/common/status-bar';
 /* @endif */
 import usePersistedState from 'effects/use-persisted-state';
 import { useHistory } from 'react-router';
-import { useIsMediumScreen } from 'effects/use-is-mobile';
+import useIsMobile, { useIsMediumScreen } from 'effects/use-is-mobile';
+import { parseURI } from 'lbry-redux';
 
 export const MAIN_CLASS = 'main';
 type Props = {
@@ -48,14 +49,25 @@ function Page(props: Props) {
   } = useHistory();
   const [sidebarOpen, setSidebarOpen] = usePersistedState('sidebar', true);
   const isMediumScreen = useIsMediumScreen();
+  const isMobile = useIsMobile();
+  let isOnFilePage = false;
+  try {
+    const url = pathname.slice(1).replace(/:/g, '#');
+    const { isChannel } = parseURI(url);
+    // url contains valid lbry uri, if it's not a channel then we are on a file page
+
+    if (!isChannel) {
+      isOnFilePage = true;
+    }
+  } catch (e) {}
+
+  const isAbsoluteSideNavHidden = (isOnFilePage || isMobile) && !sidebarOpen;
 
   React.useEffect(() => {
-    // Close the sidebar automatically when navigating to the file page
-    const isOnFilePage = pathname !== '/' && !pathname.includes('/$/') && !pathname.startsWith('/@');
     if (isOnFilePage) {
       setSidebarOpen(false);
     }
-  }, [pathname, setSidebarOpen]);
+  }, [isOnFilePage]);
 
   React.useEffect(() => {
     if (isMediumScreen) {
@@ -66,10 +78,23 @@ function Page(props: Props) {
   return (
     <Fragment>
       {!noHeader && (
-        <Header authHeader={authPage} backout={backout} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <Header
+          authHeader={authPage}
+          backout={backout}
+          sidebarOpen={sidebarOpen}
+          isAbsoluteSideNavHidden={isAbsoluteSideNavHidden}
+          setSidebarOpen={setSidebarOpen}
+        />
       )}
-      <div className={classnames('main-wrapper__inner', {})}>
-        {!authPage && !noSideNavigation && <SideNavigation sidebarOpen={sidebarOpen} isMediumScreen={isMediumScreen} />}
+      <div className={classnames('main-wrapper__inner', { 'main-wrapper__inner--filepage': isOnFilePage })}>
+        {!authPage && !noSideNavigation && (
+          <SideNavigation
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            isMediumScreen={isMediumScreen}
+            isOnFilePage={isOnFilePage}
+          />
+        )}
         <main
           className={classnames(MAIN_CLASS, className, { 'main--full-width': authPage, 'main--file-page': filePage })}
         >

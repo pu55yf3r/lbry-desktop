@@ -7,8 +7,10 @@ import Button from 'component/button';
 import Tag from 'component/tag';
 import StickyBox from 'react-sticky-box/dist/esnext';
 import classnames from 'classnames';
-import { parseURI } from 'lbry-redux';
+import NotificationBubble from 'component/notificationBubble';
 
+const ESCAPE_KEY_CODE = 27;
+const BACKSLASH_KEY_CODE = 220;
 const TOP_LEVEL_LINKS = [
   {
     label: __('Home'),
@@ -20,6 +22,13 @@ const TOP_LEVEL_LINKS = [
     navigate: `/$/${PAGES.CHANNELS_FOLLOWING}`,
     icon: ICONS.SUBSCRIBE,
     requiresAuth: !IS_WEB,
+  },
+  {
+    label: __('Notifications'),
+    navigate: `/$/${PAGES.NOTIFICATIONS}`,
+    icon: ICONS.NOTIFICATION,
+    requiresAuth: !IS_WEB,
+    extra: <NotificationBubble />,
   },
 
   {
@@ -66,6 +75,9 @@ function SideNavigation(props: Props) {
     doClearPurchasedUriSuccess,
     sidebarOpen,
     isMediumScreen,
+    setSidebarOpen,
+    isOnFilePage,
+    unreadCount,
   } = props;
   const {
     location: { pathname },
@@ -74,16 +86,7 @@ function SideNavigation(props: Props) {
   const isAuthenticated = Boolean(email);
   const [pulseLibrary, setPulseLibrary] = React.useState(false);
   const isPersonalized = !IS_WEB || isAuthenticated;
-
-  let isOnFilePage = false;
-  try {
-    const { isChannel } = parseURI(pathname.slice(1).replace(':', '#'));
-    // url contains valid lbry uri, if it's not a channel then we are on a file page
-
-    if (!isChannel) {
-      isOnFilePage = true;
-    }
-  } catch (e) {}
+  const isAbsolute = isOnFilePage || isMediumScreen;
 
   React.useEffect(() => {
     if (purchaseSuccess) {
@@ -98,18 +101,31 @@ function SideNavigation(props: Props) {
     }
   }, [setPulseLibrary, purchaseSuccess, doClearPurchasedUriSuccess]);
 
+  React.useEffect(() => {
+    function handleKeydown(e: SyntheticKeyboardEvent<*>) {
+      if (e.keyCode === ESCAPE_KEY_CODE && isAbsolute) {
+        setSidebarOpen(false);
+      } else if (e.keyCode === BACKSLASH_KEY_CODE) {
+        const hasActiveInput = document.querySelector('input:focus');
+        if (!hasActiveInput) {
+          setSidebarOpen(!sidebarOpen);
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeydown);
+
+    return () => window.removeEventListener('keydown', handleKeydown);
+  }, [sidebarOpen, setSidebarOpen, isAbsolute]);
+
   const Wrapper = ({ children }: any) =>
-    sticky && !isOnFilePage ? (
+    sticky && !isOnFilePage && !isMediumScreen ? (
       <StickyBox offsetTop={100} offsetBottom={20}>
         {children}
       </StickyBox>
     ) : (
       children
     );
-
-  // We may need to render two sidebars if a user is on a small - medium screen
-  // In that case, render the simplified sidebar with large links
-  // And potentially render the full sidebar if a user expands the menu
 
   return (
     <Wrapper>
@@ -123,9 +139,11 @@ function SideNavigation(props: Props) {
                   icon={pulseLibrary && linkProps.icon === ICONS.LIBRARY ? ICONS.PURCHASED : linkProps.icon}
                   className={classnames('navigation-link', {
                     'navigation-link--pulse': linkProps.icon === ICONS.LIBRARY && pulseLibrary,
+                    'navigation-link--extra': linkProps.icon === ICONS.NOTIFICATION && unreadCount > 0,
                   })}
                   activeClass="navigation-link--active"
                 />
+                {linkProps.extra}
               </li>
             ))}
           </ul>
@@ -148,36 +166,41 @@ function SideNavigation(props: Props) {
       )}
 
       {(isOnFilePage || isMediumScreen) && sidebarOpen && (
-        <nav className={classnames('navigation--filepage')}>
-          <ul className="navigation-links--absolute">
-            {TOP_LEVEL_LINKS.map(linkProps => (
-              <li key={linkProps.navigate}>
-                <Button
-                  {...linkProps}
-                  icon={pulseLibrary && linkProps.icon === ICONS.LIBRARY ? ICONS.PURCHASED : linkProps.icon}
-                  className={classnames('navigation-link', {
-                    'navigation-link--pulse': linkProps.icon === ICONS.LIBRARY && pulseLibrary,
-                  })}
-                  activeClass="navigation-link--active"
-                />
-              </li>
-            ))}
-          </ul>
-          {isPersonalized && subscriptions && subscriptions.length > 0 && (
-            <ul className="navigation__secondary navigation-links--small">
-              {subscriptions.map(({ uri, channelName }, index) => (
-                <li key={uri} className="navigation-link__wrapper">
+        <>
+          <nav className={classnames('navigation--filepage')}>
+            <ul className="navigation-links--absolute">
+              {TOP_LEVEL_LINKS.map(linkProps => (
+                <li key={linkProps.navigate}>
                   <Button
-                    navigate={uri}
-                    label={channelName}
-                    className="navigation-link"
+                    {...linkProps}
+                    icon={pulseLibrary && linkProps.icon === ICONS.LIBRARY ? ICONS.PURCHASED : linkProps.icon}
+                    className={classnames('navigation-link', {
+                      'navigation-link--pulse': linkProps.icon === ICONS.LIBRARY && pulseLibrary,
+                      'navigation-link--extra': linkProps.icon === ICONS.NOTIFICATION && unreadCount > 0,
+                    })}
                     activeClass="navigation-link--active"
                   />
+                  {linkProps.extra}
                 </li>
               ))}
             </ul>
-          )}
-        </nav>
+            {isPersonalized && subscriptions && subscriptions.length > 0 && (
+              <ul className="navigation__secondary navigation-links--small">
+                {subscriptions.map(({ uri, channelName }, index) => (
+                  <li key={uri} className="navigation-link__wrapper">
+                    <Button
+                      navigate={uri}
+                      label={channelName}
+                      className="navigation-link"
+                      activeClass="navigation-link--active"
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </nav>
+          <div className="navigation__overlay" onClick={() => setSidebarOpen(false)} />
+        </>
       )}
     </Wrapper>
   );

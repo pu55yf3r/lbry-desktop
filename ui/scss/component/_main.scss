@@ -18,22 +18,26 @@
   margin-top: var(--header-height);
   padding: var(--spacing-l); // Unfortunately this is coupled with .claim-preview--tile width calculation
   padding-left: 0;
+  padding-right: 0;
 
   @media (max-width: $breakpoint-small) {
     padding: var(--spacing-xs);
   }
+
+  @media (min-width: $breakpoint-large) {
+    width: 100%;
+  }
 }
 
-.main-wrapper__inner--full {
-  //   padding: 0;
-  max-width: none;
+.main-wrapper__inner--filepage {
+  padding-right: 0;
 }
 
 .main {
   position: relative;
   width: calc(100% - var(--side-nav-width) - var(--spacing-l));
   max-width: var(--page-max-width);
-
+  z-index: 0;
   margin-right: auto;
   margin-left: auto;
 
@@ -42,12 +46,6 @@
     margin-right: var(--spacing-s);
     margin-left: var(--spacing-s);
   }
-
-  //   @media (max-width: $breakpoint-small) {
-  //     width: 100%;
-  //     margin-right: 0;
-  //     margin-left: 0;
-  //   }
 }
 
 .main--file-page {

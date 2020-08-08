@@ -8,8 +8,7 @@
   font-size: var(--font-small);
   height: var(--height-input);
   max-width: 30rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: var(--spacing-s);
 
   @media (max-width: $breakpoint-small) {
     max-width: none;

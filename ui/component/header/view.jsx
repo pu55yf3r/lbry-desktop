@@ -207,6 +207,14 @@ const Header = (props: Props) => {
         ) : (
           <>
             <div className="header__navigation">
+              <span style={{ position: 'relative' }}>
+                <Button
+                  className="header__navigation-item menu__title header__navigation-item--icon"
+                  icon={ICONS.MENU}
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                />
+                {isAbsoluteSideNavHidden && <NotificationBubble />}
+              </span>
               <Button
                 className="header__navigation-item header__navigation-item--lbry header__navigation-item--button-mobile"
                 // @if TARGET='app'
@@ -237,15 +245,6 @@ const Header = (props: Props) => {
               {/* @endif */}
 
               <div className="header__center">
-                <span style={{ position: 'relative' }}>
-                  <Button
-                    className="header__navigation-item menu__title header__navigation-item--icon"
-                    icon={ICONS.MENU}
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                  />
-                  {isAbsoluteSideNavHidden && <NotificationBubble />}
-                </span>
-
                 {!authHeader && <WunderBar />}
 
                 <div className="header__right-menu">
